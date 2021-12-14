@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
   }
   *{
     box-sizing:border-box;
+    font-family:'Cafe24SsurroundAir', sans-serif;
   }
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -66,6 +67,12 @@ const GlobalStyle = createGlobalStyle`
   a{
     text-decoration:none;
     color:inherit;
+  }
+  input{
+    outline:none;
+  }
+  li{
+    list-style-type:none;
   }
 `;
 
