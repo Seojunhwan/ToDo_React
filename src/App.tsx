@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import ToDoList from "./components/ToDoList";
 
 const GlobalStyle = createGlobalStyle`
 @font-face {
@@ -72,9 +73,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <div>
-        <span>HI</span>
-      </div>
+      <ToDoList />
     </>
   );
 }
