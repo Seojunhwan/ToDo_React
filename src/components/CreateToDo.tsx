@@ -1,8 +1,7 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { addCategory, categoryState, IToDo, toDoState } from "./atoms";
+import { Categories, categoryState, IToDo, toDoState } from "./atoms";
 
 const Form = styled.form`
   display: flex;
@@ -18,6 +17,8 @@ const Input = styled.input<{ borderColor: string }>`
   border-bottom: 2px solid #ebeeff;
   transition: all 0.3s ease-in-out;
   text-align: center;
+  border-bottom: 2px solid
+    ${(props) => (props.borderColor ? props.borderColor : "#ebeeff")};
   &:focus {
     border-bottom: 2px solid ${(props) => props.borderColor};
   }
@@ -44,7 +45,6 @@ interface IForm {
 
 function CreateToDo() {
   const setToDos = useSetRecoilState(toDoState);
-  const isAddMode = useRecoilValue(addCategory);
   const category = useRecoilValue<IToDo["category"]>(categoryState);
   const {
     register,
@@ -65,15 +65,22 @@ function CreateToDo() {
     setValue("toDo", "");
     setValue("category", "");
   };
-  console.log(watch());
   return (
     <Form onSubmit={handleSubmit(handleValid)}>
-      {isAddMode ? (
+      {category === Categories.OTHER ? (
         <Input
-          {...register("category")}
+          {...register("category", {
+            required: "카테고리를 입력해주세요!",
+          })}
           placeholder="카테고리를 입력해주세요!"
           autoComplete="off"
-          borderColor="#78e08f"
+          borderColor={
+            errors.category?.message
+              ? "#ff7073"
+              : watch().category
+              ? "#78e08f"
+              : "#ebeeff"
+          }
         />
       ) : (
         ""
@@ -83,18 +90,26 @@ function CreateToDo() {
         type="text"
         placeholder="오늘은 어떤 일을 해볼까요?"
         autoComplete="off"
-        borderColor={errors.toDo?.message ? "#ff7073" : "#78e08f"}
-      />
-      <Button
-        bgColors={
+        borderColor={
           errors.toDo?.message
             ? "#ff7073"
             : watch().toDo
             ? "#78e08f"
             : "#ebeeff"
         }
+      />
+      <Button
+        bgColors={
+          errors.toDo?.message
+            ? "#ff7073"
+            : errors.category?.message
+            ? "#ff7073"
+            : watch().toDo
+            ? "#78e08f"
+            : "#ebeeff"
+        }
       >
-        {errors?.toDo?.message ?? "딸깍"}
+        {errors.category?.message ?? errors?.toDo?.message ?? "딸깍"}
       </Button>
     </Form>
   );

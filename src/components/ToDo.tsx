@@ -16,8 +16,8 @@ const List = styled.li`
     text-align: center;
   }
   &:hover {
-    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px,
-      rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+    box-shadow: rgba(27, 31, 35, 0.04) 0px 1px 0px,
+      rgba(255, 255, 255, 0.25) 0px 1px 0px inset;
   }
 `;
 
@@ -35,6 +35,10 @@ export const ToDoButton = styled(Button)`
 `;
 export const DoneButton = styled(Button)`
   background-color: #78e08f;
+`;
+
+const CategoryButton = styled(Button)`
+  background-color: #aaae8a;
 `;
 
 const DeleteButton = styled(Button)`
@@ -66,6 +70,11 @@ function ToDo({ text, category, id }: IToDo) {
   return (
     <List>
       <Buttons>
+        {category !== Categories.DOING &&
+          category !== Categories.TO_DO &&
+          category !== Categories.DONE && (
+            <CategoryButton as={"span"}>{category}</CategoryButton>
+          )}
         {category !== Categories.DOING && (
           <DoingButton onClick={() => onClick(Categories.DOING)}>
             하는 중!
@@ -81,11 +90,6 @@ function ToDo({ text, category, id }: IToDo) {
             다 했다!
           </DoneButton>
         )}
-        {category !== Categories.DOING &&
-          category !== Categories.TO_DO &&
-          category !== Categories.DONE && (
-            <DeleteButton as={"span"}>{category}</DeleteButton>
-          )}
         <DeleteButton onClick={deleteToDo}>안할래</DeleteButton>
       </Buttons>
       <span>{text}</span>
